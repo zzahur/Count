@@ -66,9 +66,9 @@
     const PRICE_THRESHOLD = 200;
     const API_KEY = "BJCGREBCWD2SB76U";
 
-    let userDateInput = prompt("Enter target date (YYYY-MM-DD):", "2041-01-01");
-    let targetDate = new Date(userDateInput);
-    const originalTargetDate = new Date(targetDate); // Save for % calc
+    // === Set static target date here ===
+    let targetDate = new Date("2041-06-07T13:00:00");
+    const originalTargetDate = new Date(targetDate);
 
     async function checkMutualFundPrice() {
       try {
@@ -105,19 +105,16 @@
           return;
         }
 
-        // Calculate percentage left and update ring
         const percent = (distance / total) * 100;
         const offset = circumference - (percent / 100) * circumference;
         ring.style.strokeDashoffset = offset;
 
-        // Break down time units
         const years = Math.floor(distance / (1000 * 60 * 60 * 24 * 365));
         const days = Math.floor((distance % (1000 * 60 * 60 * 24 * 365)) / (1000 * 60 * 60 * 24));
         const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
         const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
         const seconds = Math.floor((distance % (1000 * 60)) / 1000);
 
-        // Update countdown display
         document.getElementById("countdown").innerHTML = `
           <div class="line1">${years}y ${days}d</div>
           <div class="line2">${hours}h ${minutes}m ${seconds}s</div>`;
