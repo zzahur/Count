@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Countdown Clock with Mutual Fund Check</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      text-align: center;
+      padding: 50px;
+    }
+    #countdown {
+      font-size: 2em;
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Countdown Timer with Mutual Fund Check</h1>
+  <div id="countdown">Loading...</div>
+
+  <script>
+    // ==== CONFIGURATION ====
+    const MUTUAL_FUND_SYMBOL = "FXAIX"; // Example: Vanguard Total Stock Market Index
+    const PRICE_THRESHOLD = 200; // Add 1 year if price is below this
+    const API_KEY = "BJCGREBCWD2SB76U"; // Replace with your Alpha Vantage or other API key
+
+    // ==== GET TARGET DATE ====
+    let userDateInput = prompt("Enter target date (YYYY-MM-DD):", "2041-01-01");
+    let targetDate = new Date(userDateInput);
+
+    // Add year if condition met (after checking price)
+    async function checkMutualFundPrice() {
+      try {
+        // Replace this URL with the actual API you're using
+        const response = await fetch(`https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol=${MUTUAL_FUND_SYMBOL}&apikey=${API_KEY}`);
+        const data = await response.json();
+
+        // Extract the most recent price
+        const latestDate = Object.keys(data["Time Series (Daily)"])[0];
+        const price = parseFloat(data["Time Series (Daily)"][latestDate]["4. close"]);
+
+        console.log(`Current price of ${MUTUAL_FUND_SYMBOL}: ${price}`);
+
+        if (price < PRICE_THRESHOLD) {
+          // Extend countdown by 1 year
+          targetDate.setFullYear(targetDate.getFullYear() + 1);
+          console.log("Price below threshold. Countdown extended by 1 year.");
+        }
+      } catch (error) {
+        console.error("Failed to fetch mutual fund price:", error);
+      }
+    }
+
+    // ==== COUNTDOWN FUNCTION ====
+    function startCountdown() {
+      setInterval(() => {
+        const now = new Date();
+        const distance = targetDate - now;
+
+        if (distance <= 0) {
+          document.getElementById("countdown").innerHTML = "Time's up!";
+          return;
+        }
+
+        const years = Math.floor(distance / (1000 * 60 * 60 * 24 * 365));
+        const days = Math.floor((distance % (1000 * 60 * 60 * 24 * 365)) / (1000 * 60 * 60 * 24));
+        const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+        const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+        document.getElementById("countdown").innerHTML =
+          `${years}y ${days}d ${hours}h ${minutes}m ${seconds}s`;
+      }, 1000);
+    }
+
+    // ==== RUN ====
+    checkMutualFundPrice().then(() => {
+      startCountdown();
+    });
+  </script>
+</body>
+</html>
