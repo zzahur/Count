@@ -52,12 +52,20 @@ svg {
 }
 
 .green-ring {
-  animation: greenPulse 4s ease-in-out infinite;
+  animation-name: greenPulse;
+  animation-duration: 4s;
+  animation-iteration-count: infinite;
+  animation-timing-function: ease-in-out;
 }
 
+
 .red-ring {
-  animation: redPulse 4s ease-in-out infinite;
+  animation-name: redPulse;
+  animation-duration: 4s;
+  animation-iteration-count: infinite;
+  animation-timing-function: ease-in-out;
 }
+
 
 @keyframes greenPulse {
   0%, 100% { stroke: #6fdc88; }
