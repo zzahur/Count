@@ -1,6 +1,6 @@
 const MUTUAL_FUND_SYMBOL = "NVDA";
 const PRICE_THRESHOLD = 200;
-const API_KEY = "BJCGREBCWD2SB76U"; // Replace with your actual Alpha Vantage API key
+const API_KEY = "BJCGREBCWD2SB76U"; 
 
 document.addEventListener("DOMContentLoaded", () => {
   const ring = document.getElementById("progress-ring");
