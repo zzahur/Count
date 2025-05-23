@@ -4,7 +4,6 @@ const API_KEY = "BJCGREBCWD2SB76U"; // Replace with your actual Alpha Vantage AP
 
 document.addEventListener("DOMContentLoaded", () => {
   const ring = document.getElementById("progress-ring");
-  const ticker = document.getElementById("tick-indicator");
   const countdownEl = document.getElementById("countdown");
 
   const radius = 100;
@@ -14,7 +13,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
   let targetDate = new Date("2041-06-07T13:00:00");
   const originalTargetDate = new Date(targetDate);
-  let tickAngle = 0;
 
   async function checkMutualFundPrice() {
     try {
@@ -82,18 +80,8 @@ document.addEventListener("DOMContentLoaded", () => {
       countdownEl.innerHTML = `
         <div class="line1">${years}y ${days}d</div>
         <div class="line2">${hours}h ${minutes}m ${seconds}s</div>`;
-
-      tickAngle = (tickAngle + 6) % 360;
-      ticker.setAttribute("transform", `rotate(${tickAngle} 110 110)`);
     }, 1000);
   }
 
   checkMutualFundPrice().then(startCountdown);
-// TEMPORARY TEST — FORCE GREEN RING CLASS TO VERIFY CSS WORKS
-setTimeout(() => {
-  ring.classList.add("green-ring");
-  ring.style.stroke = "#6fdc88";
-  console.log("Forced green-ring class to test animation.");
-}, 2000);
-
 });
