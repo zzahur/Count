@@ -11,28 +11,26 @@
   <div class="circle-container">
     <svg width="220" height="220">
       <defs>
-  <linearGradient id="gradientStroke" x1="0%" y1="0%" x2="100%" y2="100%">
-    <stop offset="0%" stop-color="#6fdc88" />
-    <stop offset="100%" stop-color="#3ccf6e" />
-  </linearGradient>
-</defs>
-
+        <linearGradient id="gradientStroke" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stop-color="#6fdc88" />
+          <stop offset="100%" stop-color="#3ccf6e" />
+        </linearGradient>
+      </defs>
       <circle
         id="progress-ring"
         cx="110"
         cy="110"
-        r="100"
-        stroke="#6fdc88"
+        r="90"
+        stroke="url(#gradientStroke)"
         stroke-width="15"
         fill="none"
-        stroke-dasharray="628.32"
+        stroke-dasharray="565.48"
         stroke-dashoffset="0"
         class="green-ring"
       />
     </svg>
     <div id="countdown">
       <div class="line1">Loading...</div>
-      <div class="line2"></div>
     </div>
   </div>
   <script src="script2.js"></script>
