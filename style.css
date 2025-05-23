@@ -39,15 +39,6 @@ svg {
   gap: 10px;
 }
 
-#tick-indicator {
-  stroke: #888;
-  stroke-width: 2;
-  stroke-dasharray: 2 628.32;
-  transform-origin: 110px 110px;
-  transition: transform 0.3s ease-out;
-  transform: translate(-200px, -200px);
-}
-
 #progress-ring {
   transition: stroke 1s ease-in-out;
 }
