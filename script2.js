@@ -61,7 +61,9 @@ document.addEventListener("DOMContentLoaded", () => {
       const years = Math.floor(distance / (1000 * 60 * 60 * 24 * 365));
       const days = Math.floor((distance % (1000 * 60 * 60 * 24 * 365)) / (1000 * 60 * 60 * 24));
 
-      countdownEl.innerHTML = `<div class=\"line1\">${years}y ${days}d</div>`;
+      countdownEl.innerHTML = `
+        <div class=\"line1\">${years}y ${days}d</div>
+        <div class=\"line2\">${hours}h ${minutes}m ${seconds}s</div>`;
     }, 60000);
   }
 
