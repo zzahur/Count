@@ -3,12 +3,10 @@ const SHEET_CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vRAXxAZvG
 
 document.addEventListener("DOMContentLoaded", () => {
   const ring = document.getElementById("progress-ring");
-  const svg = document.querySelector("svg");
   const countdownEl = document.getElementById("countdown");
 
-  const radius = 90;
+  const radius = 100;
   const circumference = 2 * Math.PI * radius;
-  ring.setAttribute("r", radius);
   ring.style.strokeDasharray = `${circumference}`;
   ring.style.strokeDashoffset = 0;
 
@@ -20,7 +18,7 @@ document.addEventListener("DOMContentLoaded", () => {
       const response = await fetch(SHEET_CSV_URL);
       const text = await response.text();
       const rows = text.split('\n').map(row => row.split(','));
-      const value = parseFloat(rows[0][0]);
+      const value = parseFloat(rows[0][0]); // Cell A1
 
       if (!isNaN(value)) {
         console.log("Sheet value:", value);
@@ -40,34 +38,29 @@ document.addEventListener("DOMContentLoaded", () => {
   function startCountdown() {
     setInterval(() => {
       const now = new Date();
-      const startOfToday = new Date(now.getFullYear(), now.getMonth(), now.getDate());
-      const startOfTomorrow = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1);
       const distance = targetDate - now;
       const total = targetDate - originalTargetDate;
-      const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-const seconds = Math.floor((distance % (1000 * 60)) / 1000);
 
       if (distance <= 0) {
-        countdownEl.innerHTML = `<div class=\"line1\">Time's up!</div>`;
+        countdownEl.innerHTML = `<div class=\"line1\">Time's up!</div><div class=\"line2\"></div>`;
         ring.style.strokeDashoffset = 0;
         return;
       }
 
-      const percent = (startOfTomorrow - now) / (1000 * 60 * 60 * 24);
-      const offset = circumference - percent * circumference;
+      const percent = (distance / total) * 100;
+      const offset = circumference - (percent / 100) * circumference;
       ring.style.strokeDashoffset = offset;
-
-      const rotateDegrees = (1 - percent) * 360;
-      svg.style.transform = `rotate(${rotateDegrees}deg)`;
 
       const years = Math.floor(distance / (1000 * 60 * 60 * 24 * 365));
       const days = Math.floor((distance % (1000 * 60 * 60 * 24 * 365)) / (1000 * 60 * 60 * 24));
+      const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+      const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+      const seconds = Math.floor((distance % (1000 * 60)) / 1000);
 
       countdownEl.innerHTML = `
         <div class=\"line1\">${years}y ${days}d</div>
         <div class=\"line2\">${hours}h ${minutes}m ${seconds}s</div>`;
-    }, 60000);
+    }, 1000);
   }
 
   checkSheetValue().then(startCountdown);
