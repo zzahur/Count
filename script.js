@@ -24,14 +24,12 @@ document.addEventListener("DOMContentLoaded", () => {
       if (data["Note"]) {
         console.warn("Alpha Vantage API limit reached:", data["Note"]);
         ring.classList.add("green-ring");
-        ring.style.stroke = "#6fdc88";
         return;
       }
 
       if (!data["Time Series (Daily)"]) {
         console.error("Unexpected response structure:", data);
         ring.classList.add("green-ring");
-        ring.style.stroke = "#6fdc88";
         return;
       }
 
@@ -41,7 +39,6 @@ document.addEventListener("DOMContentLoaded", () => {
       if (!priceStr) {
         console.error("Price data not found for", latestDate);
         ring.classList.add("green-ring");
-        ring.style.stroke = "#6fdc88";
         return;
       }
 
@@ -50,17 +47,14 @@ document.addEventListener("DOMContentLoaded", () => {
 
       if (price > PRICE_THRESHOLD) {
         ring.classList.add("green-ring");
-        ring.style.stroke = "#6fdc88";
       } else {
         ring.classList.add("red-ring");
-        ring.style.stroke = "#ff8a8a";
         targetDate.setFullYear(targetDate.getFullYear() + 1);
         console.log("Price below threshold. Countdown extended by 1 year.");
       }
     } catch (error) {
       console.error("Failed to fetch mutual fund price:", error);
       ring.classList.add("green-ring");
-      ring.style.stroke = "#6fdc88";
     }
   }
 
