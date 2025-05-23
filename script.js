@@ -1,6 +1,6 @@
 const MUTUAL_FUND_SYMBOL = "FXAIX";
 const PRICE_THRESHOLD = 200;
-const API_KEY = "BJCGREBCWD2SB76U"; // Replace with your actual Alpha Vantage API key
+const API_KEY = "BJCGREBCWD2SB76U";
 
 document.addEventListener("DOMContentLoaded", () => {
   const ring = document.getElementById("progress-ring");
@@ -10,6 +10,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const circumference = 2 * Math.PI * radius;
   ring.style.strokeDasharray = `${circumference}`;
   ring.style.strokeDashoffset = `${circumference}`;
+  ring.classList.add("green-ring"); // default pulsing green
 
   let targetDate = new Date("2041-06-07T13:00:00");
   const originalTargetDate = new Date(targetDate);
@@ -19,42 +20,36 @@ document.addEventListener("DOMContentLoaded", () => {
       const response = await fetch(`https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol=${MUTUAL_FUND_SYMBOL}&apikey=${API_KEY}`);
       const data = await response.json();
 
-      ring.classList.remove("green-ring", "red-ring");
-
       if (data["Note"]) {
-        console.warn("Alpha Vantage API limit reached:", data["Note"]);
-        ring.classList.add("green-ring");
+        console.warn("API limit reached. Defaulting to green.");
         return;
       }
 
-      if (!data["Time Series (Daily)"]) {
+      const timeSeries = data["Time Series (Daily)"];
+      if (!timeSeries) {
         console.error("Unexpected response structure:", data);
-        ring.classList.add("green-ring");
         return;
       }
 
-      const latestDate = Object.keys(data["Time Series (Daily)"])[0];
-      const priceStr = data["Time Series (Daily)"][latestDate]["4. close"];
+      const latestDate = Object.keys(timeSeries)[0];
+      const price = parseFloat(timeSeries[latestDate]["4. close"]);
 
-      if (!priceStr) {
-        console.error("Price data not found for", latestDate);
-        ring.classList.add("green-ring");
+      if (isNaN(price)) {
+        console.error("Invalid price data for", latestDate);
         return;
       }
 
-      const price = parseFloat(priceStr);
-      console.log(`Current price of ${MUTUAL_FUND_SYMBOL}: $${price}`);
+      console.log(`FXAIX price: $${price}`);
 
-      if (price > PRICE_THRESHOLD) {
-        ring.classList.add("green-ring");
-      } else {
+      if (price <= PRICE_THRESHOLD) {
+        ring.classList.remove("green-ring");
         ring.classList.add("red-ring");
         targetDate.setFullYear(targetDate.getFullYear() + 1);
-        console.log("Price below threshold. Countdown extended by 1 year.");
+        console.log("Price below threshold. Countdown extended.");
       }
+
     } catch (error) {
-      console.error("Failed to fetch mutual fund price:", error);
-      ring.classList.add("green-ring");
+      console.error("Fetch error:", error);
     }
   }
 
@@ -65,7 +60,7 @@ document.addEventListener("DOMContentLoaded", () => {
       const total = targetDate - originalTargetDate;
 
       if (distance <= 0) {
-        countdownEl.innerHTML = `<div class=\"line1\">Time's up!</div><div class=\"line2\"></div>`;
+        countdownEl.innerHTML = `<div class="line1">Time's up!</div><div class="line2"></div>`;
         ring.style.strokeDashoffset = 0;
         return;
       }
@@ -81,8 +76,8 @@ document.addEventListener("DOMContentLoaded", () => {
       const seconds = Math.floor((distance % (1000 * 60)) / 1000);
 
       countdownEl.innerHTML = `
-        <div class=\"line1\">${years}y ${days}d</div>
-        <div class=\"line2\">${hours}h ${minutes}m ${seconds}s</div>`;
+        <div class="line1">${years}y ${days}d</div>
+        <div class="line2">${hours}h ${minutes}m ${seconds}s</div>`;
     }, 1000);
   }
 
