@@ -1,6 +1,6 @@
-const MUTUAL_FUND_SYMBOL = "NVDA";
+const MUTUAL_FUND_SYMBOL = "FXAIX";
 const PRICE_THRESHOLD = 200;
-const API_KEY = "BJCGREBCWD2SB76U"; 
+const API_KEY = "BJCGREBCWD2SB76U"; // Replace with your actual Alpha Vantage API key
 
 document.addEventListener("DOMContentLoaded", () => {
   const ring = document.getElementById("progress-ring");
@@ -20,8 +20,26 @@ document.addEventListener("DOMContentLoaded", () => {
     try {
       const response = await fetch(`https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol=${MUTUAL_FUND_SYMBOL}&apikey=${API_KEY}`);
       const data = await response.json();
+
+      if (data["Note"]) {
+        console.warn("Alpha Vantage API limit reached:", data["Note"]);
+        return;
+      }
+
+      if (!data["Time Series (Daily)"]) {
+        console.error("Unexpected response structure:", data);
+        return;
+      }
+
       const latestDate = Object.keys(data["Time Series (Daily)"])[0];
-      const price = parseFloat(data["Time Series (Daily)"][latestDate]["4. close"]);
+      const priceStr = data["Time Series (Daily)"][latestDate]["4. close"];
+
+      if (!priceStr) {
+        console.error("Price data not found for", latestDate);
+        return;
+      }
+
+      const price = parseFloat(priceStr);
       console.log(`Current price of ${MUTUAL_FUND_SYMBOL}: $${price}`);
 
       ring.classList.remove("green-ring", "red-ring");
