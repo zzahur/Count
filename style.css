@@ -58,14 +58,12 @@ svg {
   animation-timing-function: ease-in-out;
 }
 
-
 .red-ring {
   animation-name: redPulse;
   animation-duration: 4s;
   animation-iteration-count: infinite;
   animation-timing-function: ease-in-out;
 }
-
 
 @keyframes greenPulse {
   0%, 100% { stroke: #6fdc88; }
