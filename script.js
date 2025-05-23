@@ -9,8 +9,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const radius = 100;
   const circumference = 2 * Math.PI * radius;
   ring.style.strokeDasharray = `${circumference}`;
-  ring.style.strokeDashoffset = `${circumference}`;
-  ring.classList.add("green-ring"); // default pulsing green
+  ring.style.strokeDashoffset = 0; // Show full ring immediately
 
   let targetDate = new Date("2041-06-07T13:00:00");
   const originalTargetDate = new Date(targetDate);
