@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Countdown to Mr. Z's Retirement</title>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <h1>Countdown to Mr. Z's Retirement</h1>
+  <div class="circle-container">
+    <svg width="220" height="220">
+      <circle cx="110" cy="110" r="100" stroke="#ddd" stroke-width="15" fill="none" />
+      <circle id="tick-indicator" cx="110" cy="110" r="100" fill="none" />
+      <circle id="progress-ring" cx="110" cy="110" r="100" stroke-width="15" fill="none"
+        stroke-dasharray="628.32" stroke-dashoffset="628.32" />
+    </svg>
+    <div id="countdown">
+      <div class="line1">Loading...</div>
+      <div class="line2"></div>
+    </div>
+  </div>
+  <script src="script.js"></script>
+</body>
+</html>
