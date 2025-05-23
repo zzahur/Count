@@ -89,4 +89,11 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   checkMutualFundPrice().then(startCountdown);
+// TEMPORARY TEST — FORCE GREEN RING CLASS TO VERIFY CSS WORKS
+setTimeout(() => {
+  ring.classList.add("green-ring");
+  ring.style.stroke = "#6fdc88";
+  console.log("Forced green-ring class to test animation.");
+}, 2000);
+
 });
