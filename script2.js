@@ -12,9 +12,6 @@ document.addEventListener("DOMContentLoaded", () => {
   ring.style.strokeDasharray = `${circumference}`;
   ring.style.strokeDashoffset = 0;
 
-  // Apply gradient
-  ring.setAttribute("stroke", "url(#gradientStroke)");
-
   let targetDate = new Date("2041-06-07T13:00:00");
   const originalTargetDate = new Date(targetDate);
 
