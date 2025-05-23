@@ -19,13 +19,19 @@ document.addEventListener("DOMContentLoaded", () => {
       const response = await fetch(`https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol=${MUTUAL_FUND_SYMBOL}&apikey=${API_KEY}`);
       const data = await response.json();
 
+      ring.classList.remove("green-ring", "red-ring");
+
       if (data["Note"]) {
         console.warn("Alpha Vantage API limit reached:", data["Note"]);
+        ring.classList.add("green-ring");
+        ring.style.stroke = "#6fdc88";
         return;
       }
 
       if (!data["Time Series (Daily)"]) {
         console.error("Unexpected response structure:", data);
+        ring.classList.add("green-ring");
+        ring.style.stroke = "#6fdc88";
         return;
       }
 
@@ -34,13 +40,14 @@ document.addEventListener("DOMContentLoaded", () => {
 
       if (!priceStr) {
         console.error("Price data not found for", latestDate);
+        ring.classList.add("green-ring");
+        ring.style.stroke = "#6fdc88";
         return;
       }
 
       const price = parseFloat(priceStr);
       console.log(`Current price of ${MUTUAL_FUND_SYMBOL}: $${price}`);
 
-      ring.classList.remove("green-ring", "red-ring");
       if (price > PRICE_THRESHOLD) {
         ring.classList.add("green-ring");
         ring.style.stroke = "#6fdc88";
@@ -52,6 +59,8 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     } catch (error) {
       console.error("Failed to fetch mutual fund price:", error);
+      ring.classList.add("green-ring");
+      ring.style.stroke = "#6fdc88";
     }
   }
 
@@ -62,7 +71,7 @@ document.addEventListener("DOMContentLoaded", () => {
       const total = targetDate - originalTargetDate;
 
       if (distance <= 0) {
-        countdownEl.innerHTML = `<div class="line1">Time's up!</div><div class="line2"></div>`;
+        countdownEl.innerHTML = `<div class=\"line1\">Time's up!</div><div class=\"line2\"></div>`;
         ring.style.strokeDashoffset = 0;
         return;
       }
@@ -78,8 +87,8 @@ document.addEventListener("DOMContentLoaded", () => {
       const seconds = Math.floor((distance % (1000 * 60)) / 1000);
 
       countdownEl.innerHTML = `
-        <div class="line1">${years}y ${days}d</div>
-        <div class="line2">${hours}h ${minutes}m ${seconds}s</div>`;
+        <div class=\"line1\">${years}y ${days}d</div>
+        <div class=\"line2\">${hours}h ${minutes}m ${seconds}s</div>`;
     }, 1000);
   }
 
