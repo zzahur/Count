@@ -20,6 +20,7 @@ h1 {
 
 svg {
   transform: rotate(-90deg);
+  overflow: visible;
 }
 
 #countdown {
@@ -45,7 +46,6 @@ svg {
   transform-origin: 110px 110px;
   transition: transform 0.3s ease-out;
 }
-
 
 #progress-ring {
   transition: stroke 1s ease-in-out;
