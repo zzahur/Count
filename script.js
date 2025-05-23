@@ -1,4 +1,4 @@
-const MUTUAL_FUND_SYMBOL = "FXAIX";
+const MUTUAL_FUND_SYMBOL = "NVDA";
 const PRICE_THRESHOLD = 200;
 const API_KEY = "BJCGREBCWD2SB76U"; // Replace with your actual Alpha Vantage API key
 
