@@ -1,5 +1,5 @@
 body {
-  font-family: 'Roboto', serif;
+  font-family: 'Roboto Slab', serif;
   background: #f4f4f4;
   text-align: center;
   padding: 50px;
@@ -19,8 +19,8 @@ h1 {
 }
 
 svg {
-  transform: rotate(-90deg);
-  overflow: visible;
+  transition: transform 2s linear;
+  transform-origin: center;
 }
 
 #countdown {
@@ -32,29 +32,23 @@ svg {
   line-height: 1.5;
 }
 
-#countdown .line1,
-#countdown .line2 {
+#countdown .line1 {
   display: flex;
   justify-content: center;
   gap: 10px;
 }
 
+/* Animations */
 #progress-ring {
-  transition: stroke 1s ease-in-out;
+  transition: stroke-dashoffset 1s linear, stroke 1s ease-in-out;
 }
 
 .green-ring {
-  animation-name: greenPulse;
-  animation-duration: 4s;
-  animation-iteration-count: infinite;
-  animation-timing-function: ease-in-out;
+  animation: greenPulse 4s ease-in-out infinite;
 }
 
 .red-ring {
-  animation-name: redPulse;
-  animation-duration: 4s;
-  animation-iteration-count: infinite;
-  animation-timing-function: ease-in-out;
+  animation: redPulse 4s ease-in-out infinite;
 }
 
 @keyframes greenPulse {
