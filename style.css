@@ -40,12 +40,12 @@ svg {
 
 #tick-indicator {
   stroke: #888;
-  stroke-width: 5;
-  stroke-dasharray: 10 628.32;
-  transform-box: fill-box;
-  transform-origin: center;
+  stroke-width: 2;
+  stroke-dasharray: 2 628.32;
+  transform-origin: 110px 110px;
   transition: transform 0.3s ease-out;
 }
+
 
 #progress-ring {
   transition: stroke 1s ease-in-out;
