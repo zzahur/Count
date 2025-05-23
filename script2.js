@@ -44,6 +44,9 @@ document.addEventListener("DOMContentLoaded", () => {
       const startOfTomorrow = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1);
       const distance = targetDate - now;
       const total = targetDate - originalTargetDate;
+      const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+const seconds = Math.floor((distance % (1000 * 60)) / 1000);
 
       if (distance <= 0) {
         countdownEl.innerHTML = `<div class=\"line1\">Time's up!</div>`;
