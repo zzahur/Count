@@ -3,12 +3,17 @@ const SHEET_CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vRAXxAZvG
 
 document.addEventListener("DOMContentLoaded", () => {
   const ring = document.getElementById("progress-ring");
+  const svg = document.querySelector("svg");
   const countdownEl = document.getElementById("countdown");
 
-  const radius = 100;
+  const radius = 90;
   const circumference = 2 * Math.PI * radius;
+  ring.setAttribute("r", radius);
   ring.style.strokeDasharray = `${circumference}`;
   ring.style.strokeDashoffset = 0;
+
+  // Apply gradient
+  ring.setAttribute("stroke", "url(#gradientStroke)");
 
   let targetDate = new Date("2041-06-07T13:00:00");
   const originalTargetDate = new Date(targetDate);
@@ -18,7 +23,7 @@ document.addEventListener("DOMContentLoaded", () => {
       const response = await fetch(SHEET_CSV_URL);
       const text = await response.text();
       const rows = text.split('\n').map(row => row.split(','));
-      const value = parseFloat(rows[0][0]); // Cell A1 (row index 0, column index 0)
+      const value = parseFloat(rows[0][0]);
 
       if (!isNaN(value)) {
         console.log("Sheet value:", value);
@@ -44,7 +49,7 @@ document.addEventListener("DOMContentLoaded", () => {
       const total = targetDate - originalTargetDate;
 
       if (distance <= 0) {
-        countdownEl.innerHTML = `<div class=\"line1\">Time's up!</div><div class=\"line2\"></div>`;
+        countdownEl.innerHTML = `<div class=\"line1\">Time's up!</div>`;
         ring.style.strokeDashoffset = 0;
         return;
       }
@@ -53,11 +58,14 @@ document.addEventListener("DOMContentLoaded", () => {
       const offset = circumference - percent * circumference;
       ring.style.strokeDashoffset = offset;
 
+      const rotateDegrees = (1 - percent) * 360;
+      svg.style.transform = `rotate(${rotateDegrees}deg)`;
+
       const years = Math.floor(distance / (1000 * 60 * 60 * 24 * 365));
       const days = Math.floor((distance % (1000 * 60 * 60 * 24 * 365)) / (1000 * 60 * 60 * 24));
 
       countdownEl.innerHTML = `<div class=\"line1\">${years}y ${days}d</div>`;
-    }, 60000); // update once per minute
+    }, 60000);
   }
 
   checkSheetValue().then(startCountdown);
