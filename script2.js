@@ -38,6 +38,8 @@ document.addEventListener("DOMContentLoaded", () => {
   function startCountdown() {
     setInterval(() => {
       const now = new Date();
+      const startOfToday = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+      const startOfTomorrow = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1);
       const distance = targetDate - now;
       const total = targetDate - originalTargetDate;
 
@@ -47,20 +49,15 @@ document.addEventListener("DOMContentLoaded", () => {
         return;
       }
 
-      const percent = (distance / total) * 100;
-      const offset = circumference - (percent / 100) * circumference;
+      const percent = (startOfTomorrow - now) / (1000 * 60 * 60 * 24);
+      const offset = circumference - percent * circumference;
       ring.style.strokeDashoffset = offset;
 
       const years = Math.floor(distance / (1000 * 60 * 60 * 24 * 365));
       const days = Math.floor((distance % (1000 * 60 * 60 * 24 * 365)) / (1000 * 60 * 60 * 24));
-      const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-      const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-      const seconds = Math.floor((distance % (1000 * 60)) / 1000);
 
-      countdownEl.innerHTML = `
-        <div class=\"line1\">${years}y ${days}d</div>
-        <div class=\"line2\">${hours}h ${minutes}m ${seconds}s</div>`;
-    }, 1000);
+      countdownEl.innerHTML = `<div class=\"line1\">${years}y ${days}d</div>`;
+    }, 60000); // update once per minute
   }
 
   checkSheetValue().then(startCountdown);
